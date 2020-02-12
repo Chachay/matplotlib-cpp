@@ -1,22 +1,33 @@
-examples: minimal basic modern animation nonblock xkcd
+# Use C++11
+CXXFLAGS += -std=c++11
 
-minimal: examples/minimal.cpp matplotlibcpp.h
-	cd examples && g++ -DWITHOUT_NUMPY minimal.cpp -I/usr/include/python2.7 -lpython2.7 -o minimal -std=c++11
+# Default to using system's default version of python
+PYTHON_BIN     ?= python
+PYTHON_CONFIG  := $(PYTHON_BIN)-config
+PYTHON_INCLUDE ?= $(shell $(PYTHON_CONFIG) --includes)
+CXXFLAGS       += $(PYTHON_INCLUDE)
+LDFLAGS        += $(shell $(PYTHON_CONFIG) --libs)
 
-basic: examples/basic.cpp matplotlibcpp.h
-	cd examples && g++ basic.cpp -I/usr/include/python2.7 -lpython2.7 -o basic
+# Either finds numpy or set -DWITHOUT_NUMPY
+CXXFLAGS        += $(shell $(PYTHON_BIN) $(CURDIR)/numpy_flags.py)
+WITHOUT_NUMPY   := $(findstring $(CXXFLAGS), WITHOUT_NUMPY)
 
-modern: examples/modern.cpp matplotlibcpp.h
-	cd examples && g++ modern.cpp -I/usr/include/python2.7 -lpython2.7 -o modern -std=c++11
+# Examples requiring numpy support to compile
+EXAMPLES_NUMPY  := surface
+EXAMPLES        := minimal basic modern animation nonblock xkcd quiver bar fill_inbetween fill update subplot2grid \
+                   $(if WITHOUT_NUMPY,,$(EXAMPLES_NUMPY))
 
-animation: examples/animation.cpp matplotlibcpp.h
-	cd examples && g++ animation.cpp -I/usr/include/python2.7 -lpython2.7 -o animation -std=c++11
+# Prefix every example with 'examples/build/'
+EXAMPLE_TARGETS := $(patsubst %,examples/build/%,$(EXAMPLES))
 
-nonblock: examples/nonblock.cpp matplotlibcpp.h
-	cd examples && g++ nonblock.cpp -I/usr/include/python2.7 -lpython2.7 -o nonblock -std=c++11
+.PHONY: examples
 
-xkcd: examples/xkcd.cpp matplotlibcpp.h
-	cd examples && g++ xkcd.cpp -I/usr/include/python2.7 -lpython2.7 -o xkcd -std=c++11
+examples: $(EXAMPLE_TARGETS)
+
+# Assume every *.cpp file is a separate example
+$(EXAMPLE_TARGETS): examples/build/%: examples/%.cpp
+	mkdir -p examples/build
+	$(CXX) -o $@ $< $(CXXFLAGS) $(LDFLAGS)
 
 clean:
-	rm -f examples/{minimal,basic,modern,animation,nonblock,xkcd}
+	rm -f ${EXAMPLE_TARGETS}
