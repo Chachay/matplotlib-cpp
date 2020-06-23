@@ -1,0 +1,31 @@
+version: 1.0.{build}
+branches:
+  only:
+  - dev3
+image:
+- Visual Studio 2015
+- Visual Studio 2017
+- Visual Studio 2019
+configuration: Release
+platform: x64
+init:
+- cmd: >-
+    echo %APPVEYOR_BUILD_WORKER_IMAGE%
+
+    if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" set MSVC_VERSION=14
+
+    if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" set MSVC_VERSION=15
+
+    if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2019" set MSVC_VERSION=19
+
+    set PATH=%PYTHONHOME%;%PYTHONHOME%\Scripts;%ProgramFiles(x86)%\Microsoft Visual Studio\Installer;%PATH%
+environment:
+  PYTHONHOME: C:\Miniconda37-x64
+install:
+- cmd: >-
+    conda install --yes numpy matplotlib
+build_script:
+- cmd: >-
+    cd contrib
+
+    call WinBuild.cmd

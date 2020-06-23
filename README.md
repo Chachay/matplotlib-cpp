@@ -1,6 +1,8 @@
 matplotlib-cpp
 ==============
 
+[![Build status](https://ci.appveyor.com/api/projects/status/qcv0r9y4jf5bvxa8?svg=true)](https://ci.appveyor.com/project/Chachay/matplotlib-cpp)
+
 Welcome to matplotlib-cpp, possibly the simplest C++ plotting library.
 It is built to resemble the plotting API used by Matlab and matplotlib.
 
