@@ -30,3 +30,8 @@ The `WinBuild.cmd` will set up temporal ENV variables and build binaries in (mat
 
 3. Find exe files in examples/build/Release
 Note: platforms folder is necessary to make qt works.
+
+
+### Check before run examples
+If you use Anaconda on Windows, you might need to set PYTHONHOME to Anaconda home directory and QT_QPA_PLATFORM_PLUGIN_PATH to %PYTHONHOME%Library/plugins/platforms. The latter is for especially when you get the error which says 'This application failed to start because it could not find or load the Qt platform plugin "windows"
+in "".'

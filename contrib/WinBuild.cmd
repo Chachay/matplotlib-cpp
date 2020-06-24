@@ -62,8 +62,8 @@ cmake --build . --config %CMAKE_CONFIG%
 
 pushd %CMAKE_CONFIG%  
 if not EXIST platforms mkdir platforms
-if EXIST %PYTHONHOME%/Library/plugins/platforms/qwindows.dll ^
-cp %PYTHONHOME%/Library/plugins/platforms/qwindows.dll ./platforms/
+if EXIST %PYTHONHOME%\Library\plugins\platforms\qwindows.dll ^
+copy %PYTHONHOME%\Library\plugins\platforms\qwindows.dll .\platforms\
 popd
 REM move ./%CMAKE_CONFIG% ../
 popd

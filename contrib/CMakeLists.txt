@@ -9,6 +9,7 @@ include_directories(${PYTHONHOME}/Lib/site-packages/numpy/core/include)
 link_directories(${PYTHONHOME}/libs)
 
 add_definitions(-DMATPLOTLIBCPP_PYTHON_HEADER=Python.h)
+add_compile_definitions(WITHOUT_NUMPY)
 
 # message(STATUS "*** dump start cmake variables ***")
 # get_cmake_property(_variableNames VARIABLES)
