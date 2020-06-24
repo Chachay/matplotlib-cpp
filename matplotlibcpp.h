@@ -13,6 +13,7 @@
 #include <iostream>
 #include <cstdint> // <cstdint> requires c++11 support
 #include <functional>
+#include <string>
 
 #ifndef WITHOUT_NUMPY
 #  define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
@@ -312,9 +313,9 @@ template <> struct select_npy_type<uint64_t> { const static NPY_TYPES type = NPY
 
 // Sanity checks; comment them out or change the numpy type below if you're compiling on
 // a platform where they don't apply
-static_assert(sizeof(long long) == 8);
+static_assert(sizeof(long long) == 8, "long long must be 8 byte");
 template <> struct select_npy_type<long long> { const static NPY_TYPES type = NPY_INT64; };
-static_assert(sizeof(unsigned long long) == 8);
+static_assert(sizeof(unsigned long long) == 8, "unsigned long long must be 8 byte");
 template <> struct select_npy_type<unsigned long long> { const static NPY_TYPES type = NPY_UINT64; };
 // TODO: add int, long, etc.
 
