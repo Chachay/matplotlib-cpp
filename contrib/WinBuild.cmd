@@ -59,6 +59,10 @@ if "%MSVC_VERSION%" GEQ "19" (
         %~dp0
 )
 cmake --build . --config %CMAKE_CONFIG%  
+SET BUILD_ERRORLEVEL=!ERRORLEVEL!
+IF NOT "!BUILD_ERRORLEVEL!"=="0" (
+    EXIT /B !BUILD_ERRORLEVEL!
+)
 
 pushd %CMAKE_CONFIG%  
 if not EXIST platforms mkdir platforms
